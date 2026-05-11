@@ -10,22 +10,24 @@ export default defineConfig({
     tailwindcss(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
+      includeAssets: ['favicon.svg'],
       manifest: {
         name: 'Easy Life',
         short_name: 'EasyLife',
-        description: 'Sistema de reciclagem comunitária ribeirinha',
+        description: 'Sustentabilidade e Reciclagem em Manaus',
         theme_color: '#10b981',
         icons: [
           {
-            src: 'pwa-192x192.png',
+            src: 'favicon.svg',
             sizes: '192x192',
-            type: 'image/png'
+            type: 'image/svg+xml',
+            purpose: 'any'
           },
           {
-            src: 'pwa-512x512.png',
+            src: 'favicon.svg',
             sizes: '512x512',
-            type: 'image/png'
+            type: 'image/svg+xml',
+            purpose: 'any'
           }
         ]
       }
