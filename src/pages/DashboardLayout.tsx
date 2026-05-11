@@ -2,7 +2,7 @@ import React from 'react'
 import { Outlet, Navigate } from 'react-router-dom'
 import { BottomNav } from '../components/BottomNav'
 import { useAuth } from '../context/AuthContext'
-import { motion, AnimatePresence } from 'framer-motion'
+import { AnimatePresence } from 'framer-motion'
 
 export const DashboardLayout: React.FC = () => {
   const { user, loading } = useAuth()

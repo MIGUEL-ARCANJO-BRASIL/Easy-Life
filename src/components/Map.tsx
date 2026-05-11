@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { MapContainer, TileLayer, Marker, Popup, useMap, Polyline } from 'react-leaflet'
 import L from 'leaflet'
-import { MapPin, Navigation, RefreshCw, LocateFixed, ExternalLink } from 'lucide-react'
+import { Navigation, RefreshCw, LocateFixed, ExternalLink } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 
 // Corrigindo o problema dos ícones do Leaflet
