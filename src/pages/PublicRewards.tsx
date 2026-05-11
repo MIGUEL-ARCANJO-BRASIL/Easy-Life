@@ -2,7 +2,7 @@ import React from 'react'
 import { motion } from 'framer-motion'
 import { Navbar } from '../components/Navbar'
 import { Footer } from '../components/Footer'
-import { Gift, Award, Zap, Heart, Star, ShoppingBag, Truck } from 'lucide-react'
+import { Award, Zap, Star, ShoppingBag, Truck } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 export const PublicRewards: React.FC = () => {

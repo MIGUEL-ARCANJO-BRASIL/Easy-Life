@@ -4,14 +4,13 @@ import { Navbar } from '../components/Navbar'
 import { Footer } from '../components/Footer'
 import { CollectionMap } from '../components/Map'
 import { supabase } from '../lib/supabase'
-import { Search, MapPin, Navigation, Info, Clock } from 'lucide-react'
+import { Search, MapPin, Navigation, Clock } from 'lucide-react'
 
 export const PublicPoints: React.FC = () => {
   const [points, setPoints] = useState<any[]>([])
   const [search, setSearch] = useState('')
   const [selectedPoint, setSelectedPoint] = useState<any | null>(null)
   const [userLocation, setUserLocation] = useState<[number, number] | null>(null)
-  const [loading, setLoading] = useState(true)
 
   // Função para calcular distância em KM (Haversine)
   const getDistance = (lat1: number, lon1: number, lat2: number, lon2: number) => {
@@ -39,7 +38,6 @@ export const PublicPoints: React.FC = () => {
     const fetchPoints = async () => {
       const { data } = await supabase.from('collection_points').select('*')
       if (data) setPoints(data)
-      setLoading(false)
     }
     fetchPoints()
   }, [])
