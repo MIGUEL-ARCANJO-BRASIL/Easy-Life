@@ -78,13 +78,15 @@ export const Home: React.FC = () => {
           <div className="w-20 h-1.5 bg-[#10b981] mx-auto mt-6 rounded-full mb-16"></div>
           <div className="grid md:grid-cols-4 gap-8">
             {[
-              { icon: <MapPin />, title: 'Localize', desc: 'Encontre pontos de coleta próximos no nosso app.', color: 'bg-emerald-50 text-emerald-600' },
-              { icon: <Recycle />, title: 'Separe', desc: 'Separe plástico, metal, papel e vidro em casa.', color: 'bg-blue-50 text-blue-600' },
-              { icon: <Zap />, title: 'Entregue', desc: 'Leve ao ponto e valide sua entrega via QR Code.', color: 'bg-yellow-50 text-yellow-600' },
-              { icon: <Award />, title: 'Ganhe', desc: 'Receba pontos e troque por benefícios reais.', color: 'bg-purple-50 text-purple-600' },
+              { icon: MapPin, title: 'Localize', desc: 'Encontre pontos de coleta próximos no nosso app.', color: 'bg-emerald-50 text-emerald-600' },
+              { icon: Recycle, title: 'Separe', desc: 'Separe plástico, metal, papel e vidro em casa.', color: 'bg-blue-50 text-blue-600' },
+              { icon: Zap, title: 'Entregue', desc: 'Leve ao ponto e valide sua entrega via QR Code.', color: 'bg-yellow-50 text-yellow-600' },
+              { icon: Award, title: 'Ganhe', desc: 'Receba pontos e troque por benefícios reais.', color: 'bg-purple-50 text-purple-600' },
             ].map((step, i) => (
               <motion.div key={i} whileHover={{ y: -10 }} className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100">
-                <div className={`w-16 h-16 ${step.color} rounded-2xl flex items-center justify-center mb-6 mx-auto`}>{React.cloneElement(step.icon as React.ReactElement, { size: 28 })}</div>
+                <div className={`w-16 h-16 ${step.color} rounded-2xl flex items-center justify-center mb-6 mx-auto`}>
+                  <step.icon size={28} />
+                </div>
                 <h4 className="text-lg font-bold text-slate-800 mb-3">{step.title}</h4>
                 <p className="text-sm text-slate-500 leading-relaxed">{step.desc}</p>
               </motion.div>
@@ -147,12 +149,14 @@ export const Home: React.FC = () => {
           <h2 className="text-4xl font-extrabold mb-16">Educação <span className="text-[#10b981]">Ambiental</span></h2>
           <div className="grid md:grid-cols-3 gap-8">
             {[
-              { title: 'Lave as embalagens', desc: 'Evite contaminação para facilitar a reciclagem de plásticos.', icon: <Recycle /> },
-              { title: 'Reduza plásticos', desc: 'Sempre que possível, use ecobags e evite descartáveis.', icon: <Globe /> },
-              { title: 'Separe em casa', desc: 'Tenha um cesto apenas para secos e outro para orgânicos.', icon: <BookOpen /> },
+              { title: 'Lave as embalagens', desc: 'Evite contaminação para facilitar a reciclagem de plásticos.', icon: Recycle },
+              { title: 'Reduza plásticos', desc: 'Sempre que possível, use ecobags e evite descartáveis.', icon: Globe },
+              { title: 'Separe em casa', desc: 'Tenha um cesto apenas para secos e outro para orgânicos.', icon: BookOpen },
             ].map((edu, i) => (
               <div key={i} className="p-10 rounded-[3rem] bg-white/5 border border-white/10 hover:border-[#10b981]/50 transition-all group">
-                <div className="text-[#10b981] mb-8 mx-auto w-fit group-hover:scale-110 transition-transform">{React.cloneElement(edu.icon as React.ReactElement, { size: 40 })}</div>
+                <div className="text-[#10b981] mb-8 mx-auto w-fit group-hover:scale-110 transition-transform">
+                  <edu.icon size={40} />
+                </div>
                 <h4 className="text-xl font-bold mb-4">{edu.title}</h4>
                 <p className="text-slate-400 text-sm leading-relaxed">{edu.desc}</p>
               </div>

@@ -46,7 +46,7 @@ export const Login: React.FC = () => {
     const email = `${cleanCPF}@easylife.com`
 
     try {
-      const { error: signInError } = await signIn(email, data.password)
+      const { error: signInError } = await signIn({ email, password: data.password })
       if (signInError) throw signInError
       navigate('/app')
     } catch (err: any) {
@@ -58,14 +58,14 @@ export const Login: React.FC = () => {
   }
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-6 font-sans relative"
     >
-      <Link 
-        to="/" 
+      <Link
+        to="/"
         className="absolute top-8 left-8 flex items-center gap-2 text-slate-400 hover:text-[#10b981] font-bold transition-colors group"
       >
         <div className="w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center group-hover:scale-110 transition-transform">
@@ -74,7 +74,7 @@ export const Login: React.FC = () => {
         <span className="hidden md:block">Voltar para o início</span>
       </Link>
 
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
@@ -105,10 +105,10 @@ export const Login: React.FC = () => {
                 name="cpf"
                 control={control}
                 render={({ field }) => (
-                  <input 
+                  <input
                     {...field}
                     disabled={isLoading}
-                    type="text" 
+                    type="text"
                     inputMode="numeric"
                     placeholder="000.000.000-00"
                     onChange={(e) => field.onChange(formatCPF(e.target.value))}
@@ -128,7 +128,7 @@ export const Login: React.FC = () => {
                 name="password"
                 control={control}
                 render={({ field }) => (
-                  <input 
+                  <input
                     {...field}
                     disabled={isLoading}
                     type={showPassword ? "text" : "password"}
@@ -137,7 +137,7 @@ export const Login: React.FC = () => {
                   />
                 )}
               />
-              <button 
+              <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-300 hover:text-emerald-500 transition-colors p-1"
@@ -148,7 +148,7 @@ export const Login: React.FC = () => {
             {errors.password && <p className="text-red-500 text-xs mt-2 ml-1">{errors.password.message}</p>}
           </div>
 
-          <button 
+          <button
             type="submit"
             disabled={isLoading}
             className="w-full bg-[#10b981] hover:bg-[#059669] text-white font-bold py-5 rounded-2xl shadow-xl shadow-emerald-200 flex items-center justify-center gap-2 transition-all active:scale-[0.98] group disabled:opacity-70"
@@ -171,14 +171,14 @@ export const Login: React.FC = () => {
               Cadastre-se agora
             </Link>
           </p>
-          
+
           <div className="flex items-center gap-2 text-[10px] text-slate-300 font-bold uppercase tracking-[0.2em] bg-slate-50 px-4 py-2 rounded-full">
             <ShieldCheck size={12} />
             Segurança LGPD
           </div>
         </div>
       </motion.div>
-      
+
       <div className="mt-8 text-[10px] font-bold text-slate-300 uppercase tracking-widest">
         © 2026 Easy Life • Sustentabilidade Real
       </div>

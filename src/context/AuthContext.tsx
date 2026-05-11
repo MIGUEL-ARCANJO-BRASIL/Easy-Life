@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
-import type { User } from '@supabase/supabase-js'
+import type { User, SignInWithPasswordCredentials, SignUpWithPasswordCredentials, AuthResponse } from '@supabase/supabase-js'
 import { supabase } from '../lib/supabase'
 
 interface UserProfile {
@@ -14,6 +14,8 @@ interface AuthContextType {
   user: User | null
   profile: UserProfile | null
   loading: boolean
+  signIn: (credentials: SignInWithPasswordCredentials) => Promise<AuthResponse>
+  signUp: (credentials: SignUpWithPasswordCredentials) => Promise<AuthResponse>
   signOut: () => Promise<void>
 }
 
@@ -58,12 +60,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }
 
+  const signIn = async (credentials: SignInWithPasswordCredentials) => {
+    return await supabase.auth.signInWithPassword(credentials)
+  }
+
+  const signUp = async (credentials: SignUpWithPasswordCredentials) => {
+    return await supabase.auth.signUp(credentials)
+  }
+
   const signOut = async () => {
     await supabase.auth.signOut()
+    setUser(null)
+    setProfile(null)
   }
 
   return (
-    <AuthContext.Provider value={{ user, profile, loading, signOut }}>
+    <AuthContext.Provider value={{ user, profile, loading, signIn, signUp, signOut }}>
       {children}
     </AuthContext.Provider>
   )
