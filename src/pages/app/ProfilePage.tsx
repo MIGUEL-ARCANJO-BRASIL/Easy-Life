@@ -1,15 +1,18 @@
+// ProfilePage.tsx - VERSÃO MELHORADA
 import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { User, QrCode, Settings, LogOut, ChevronRight, Shield, Bell, HelpCircle, Loader2 } from 'lucide-react'
+import { User, QrCode, Settings, LogOut, ChevronRight, Shield, Bell, HelpCircle, Loader2, Copy, Check } from 'lucide-react'
 import { useAuth } from '../../context/AuthContext'
 import { useNavigate } from 'react-router-dom'
 import { supabase } from '../../lib/supabase'
+import { QRCodeSVG } from 'qrcode.react'
 
 export const ProfilePage: React.FC = () => {
   const { user, signOut } = useAuth()
   const navigate = useNavigate()
   const [profile, setProfile] = useState<any>(null)
   const [loading, setLoading] = useState(true)
+  const [copied, setCopied] = useState(false)
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -31,6 +34,17 @@ export const ProfilePage: React.FC = () => {
     await signOut()
     navigate('/')
   }
+
+  const copyToClipboard = async () => {
+    if (user?.id) {
+      await navigator.clipboard.writeText(user.id)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    }
+  }
+
+  // ✅ Melhorado: Gerar objeto com mais informações (opcional)
+  const qrData = user?.id || ''  // Mantém apenas UUID para simplicidade
 
   if (loading) {
     return (
@@ -62,17 +76,39 @@ export const ProfilePage: React.FC = () => {
             <h3 className="font-extrabold text-slate-800 uppercase tracking-widest text-xs">Identificador Único</h3>
           </div>
           
-          <div className="w-48 h-48 bg-slate-50 rounded-3xl p-4 border-2 border-dashed border-slate-200 flex items-center justify-center relative mb-6">
-             <QrCode size={120} className="text-slate-800 opacity-80" />
-             <div className="absolute inset-0 bg-gradient-to-tr from-emerald-500/5 to-transparent rounded-3xl"></div>
+          {/* QR Code REAL gerado dinamicamente */}
+          <div className="w-48 h-48 bg-white rounded-3xl p-4 border-2 border-emerald-200 flex items-center justify-center relative mb-6 shadow-lg">
+            <QRCodeSVG 
+              value={qrData}
+              size={160}
+              level="H"
+              includeMargin={true}
+              bgColor="#ffffff"
+              fgColor="#10b981"
+            />
+            <div className="absolute inset-0 bg-gradient-to-tr from-emerald-500/5 to-transparent rounded-3xl pointer-events-none"></div>
           </div>
 
           <p className="text-xs text-slate-400 font-medium leading-relaxed max-w-[200px]">
             Apresente este código ao operador no ponto de coleta para validar suas entregas.
           </p>
+          
+          {/* ID com botão de copiar */}
+          <div className="mt-4 flex items-center gap-2 bg-slate-50 px-3 py-2 rounded-xl">
+            <code className="text-[10px] text-slate-500 font-mono">
+              ID: {user?.id?.substring(0, 8)}...{user?.id?.substring(user.id.length - 4)}
+            </code>
+            <button
+              onClick={copyToClipboard}
+              className="p-1 hover:bg-slate-200 rounded-md transition-colors"
+              title="Copiar ID completo"
+            >
+              {copied ? <Check size={12} className="text-emerald-500" /> : <Copy size={12} className="text-slate-400" />}
+            </button>
+          </div>
         </motion.div>
 
-        {/* Menu Options */}
+        {/* Menu Options - mantido igual */}
         <div className="space-y-3 mb-10">
           {[
             { icon: <Shield size={18} />, label: 'Privacidade e Segurança', color: 'text-blue-500' },
