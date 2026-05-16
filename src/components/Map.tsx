@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { MapContainer, TileLayer, Marker, Popup, useMap, Polyline } from 'react-leaflet'
 import L from 'leaflet'
-import { Navigation, RefreshCw, LocateFixed, ExternalLink } from 'lucide-react'
+import { Navigation, RefreshCw, LocateFixed } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 
 // Corrigindo o problema dos ícones do Leaflet
@@ -120,9 +120,6 @@ export const CollectionMap: React.FC<MapProps> = ({ externalPoints, forcedCenter
     fetchUserLocation(() => setIsSyncing(false))
   }
 
-  const openInGoogleMaps = (lat: number, lng: number) => {
-    window.open(`https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`, '_blank')
-  }
 
   if (loading) {
     return (

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { CollectionMap } from '../../components/Map'
-import { Search, MapPin, X, Filter, Navigation as NavIcon, Clock, Package, ExternalLink, Navigation } from 'lucide-react'
+import { Search, MapPin, X, Filter, Navigation as NavIcon, Package, ExternalLink, Navigation } from 'lucide-react'
 import { supabase } from '../../lib/supabase'
 
 interface Point {
