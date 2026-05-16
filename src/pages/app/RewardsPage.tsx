@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Gift, Zap, TrendingUp, History, Award, ArrowRight, Loader2, QrCode, X, Package, Box, Beer, Newspaper, CheckCircle, AlertCircle, ShoppingBag, Coins, Clock, Calendar, Trash2 } from 'lucide-react'
+import { Gift, History, Award, ArrowRight, Loader2, QrCode, X, Package, Box, Beer, Newspaper, CheckCircle, AlertCircle, ShoppingBag, Coins, Clock, Calendar } from 'lucide-react'
 import { supabase } from '../../lib/supabase'
 import { useAuth } from '../../context/AuthContext'
 
@@ -60,7 +60,7 @@ const TransactionsHistoryDialog: React.FC<{
   transactions: Transaction[]
 }> = ({ isOpen, onClose, transactions }) => {
   const getMaterialIcon = (type: string) => {
-    const icons: Record<string, any> = {
+    const icons: Record<string, React.ElementType> = {
       plastic: Package,
       metal: Box,
       paper: Newspaper,
@@ -95,7 +95,7 @@ const TransactionsHistoryDialog: React.FC<{
     const now = new Date()
     const diff = now.getTime() - date.getTime()
     const days = Math.floor(diff / (1000 * 60 * 60 * 24))
-    
+
     if (days === 0) return 'Hoje'
     if (days === 1) return 'Ontem'
     if (days < 7) return `${days} dias atrás`
@@ -209,42 +209,42 @@ const RedeemRewardsDialog: React.FC<{
   const [loading, setLoading] = useState(false)
 
   const rewards = [
-    { 
-      id: 'discount_10', 
-      name: 'Desconto de R$10', 
-      points: 100, 
+    {
+      id: 'discount_10',
+      name: 'Desconto de R$10',
+      points: 100,
       icon: ShoppingBag,
       description: 'Válido em compras acima de R$50',
       color: 'from-blue-500 to-blue-600'
     },
-    { 
-      id: 'discount_20', 
-      name: 'Desconto de R$20', 
-      points: 180, 
+    {
+      id: 'discount_20',
+      name: 'Desconto de R$20',
+      points: 180,
       icon: ShoppingBag,
       description: 'Válido em compras acima de R$80',
       color: 'from-emerald-500 to-emerald-600'
     },
-    { 
-      id: 'discount_50', 
-      name: 'Desconto de R$50', 
-      points: 400, 
+    {
+      id: 'discount_50',
+      name: 'Desconto de R$50',
+      points: 400,
       icon: ShoppingBag,
       description: 'Válido em compras acima de R$150',
       color: 'from-purple-500 to-purple-600'
     },
-    { 
-      id: 'eco_kit', 
-      name: 'Kit Eco-friendly', 
-      points: 250, 
+    {
+      id: 'eco_kit',
+      name: 'Kit Eco-friendly',
+      points: 250,
       icon: Gift,
       description: 'Sacolas reutilizáveis + squeeze',
       color: 'from-orange-500 to-orange-600'
     },
-    { 
-      id: 'plant', 
-      name: 'Muda de Árvore', 
-      points: 150, 
+    {
+      id: 'plant',
+      name: 'Muda de Árvore',
+      points: 150,
       icon: Gift,
       description: 'Plante uma árvore nativa',
       color: 'from-green-500 to-green-600'
@@ -256,7 +256,7 @@ const RedeemRewardsDialog: React.FC<{
 
   const handleRedeem = async () => {
     if (!selectedRewardData || !canRedeem) return
-    
+
     setLoading(true)
     await onRedeem(selectedRewardData.id, selectedRewardData.points, selectedRewardData.name)
     setLoading(false)
@@ -301,16 +301,15 @@ const RedeemRewardsDialog: React.FC<{
               {rewards.map((reward) => {
                 const Icon = reward.icon
                 const isAvailable = userPoints >= reward.points
-                
+
                 return (
                   <button
                     key={reward.id}
                     onClick={() => setSelectedReward(reward.id)}
-                    className={`w-full p-4 rounded-xl border-2 transition-all text-left ${
-                      selectedReward === reward.id
-                        ? 'border-emerald-500 bg-emerald-50'
-                        : 'border-slate-200 hover:border-emerald-300'
-                    } ${!isAvailable ? 'opacity-50' : ''}`}
+                    className={`w-full p-4 rounded-xl border-2 transition-all text-left ${selectedReward === reward.id
+                      ? 'border-emerald-500 bg-emerald-50'
+                      : 'border-slate-200 hover:border-emerald-300'
+                      } ${!isAvailable ? 'opacity-50' : ''}`}
                     disabled={!isAvailable}
                   >
                     <div className="flex items-start gap-3">
@@ -362,11 +361,10 @@ const RedeemRewardsDialog: React.FC<{
             <button
               onClick={handleRedeem}
               disabled={!canRedeem || loading}
-              className={`w-full mt-6 py-4 rounded-xl font-bold transition-all flex items-center justify-center gap-2 ${
-                canRedeem
-                  ? 'bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white shadow-lg'
-                  : 'bg-slate-200 text-slate-500 cursor-not-allowed'
-              }`}
+              className={`w-full mt-6 py-4 rounded-xl font-bold transition-all flex items-center justify-center gap-2 ${canRedeem
+                ? 'bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white shadow-lg'
+                : 'bg-slate-200 text-slate-500 cursor-not-allowed'
+                }`}
             >
               {loading ? (
                 <Loader2 className="animate-spin" size={20} />
@@ -384,13 +382,13 @@ const RedeemRewardsDialog: React.FC<{
   )
 }
 
-//Scanner QR Code
 const QRScannerDialog: React.FC<{
   isOpen: boolean
   onClose: () => void
   onScan: (data: string) => void
 }> = ({ isOpen, onClose, onScan }) => {
   const scannerRef = useRef<HTMLDivElement>(null)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const html5QrCodeRef = useRef<any>(null)
 
   useEffect(() => {
@@ -398,9 +396,9 @@ const QRScannerDialog: React.FC<{
       if (isOpen && scannerRef.current) {
         try {
           const { Html5Qrcode } = await import('html5-qrcode')
-          
+
           html5QrCodeRef.current = new Html5Qrcode("scanner-container")
-          
+
           const qrCodeSuccessCallback = (decodedText: string) => {
             console.log('QR Code escaneado:', decodedText)
             onScan(decodedText)
@@ -427,7 +425,7 @@ const QRScannerDialog: React.FC<{
     }
   }, [isOpen, onScan])
 
-  const stopScanner = async () => {
+  async function stopScanner() {
     if (html5QrCodeRef.current && html5QrCodeRef.current.isScanning) {
       try {
         await html5QrCodeRef.current.stop()
@@ -460,9 +458,9 @@ const QRScannerDialog: React.FC<{
                 <X size={20} />
               </button>
             </div>
-            
+
             <div id="scanner-container" ref={scannerRef} className="w-full aspect-square rounded-xl overflow-hidden bg-slate-100"></div>
-            
+
             <p className="text-sm text-slate-500 text-center mt-4">
               Posicione o QR Code do residente no centro da câmera
             </p>
@@ -497,7 +495,7 @@ const AddPointsDialog: React.FC<{
 
   const handleSubmit = async () => {
     if (!selectedMaterial || weight <= 0) return
-    
+
     setLoading(true)
     await onSubmit(userId, totalPoints, selectedMaterial)
     setLoading(false)
@@ -547,11 +545,10 @@ const AddPointsDialog: React.FC<{
                       <button
                         key={material.id}
                         onClick={() => setSelectedMaterial(material.id)}
-                        className={`p-4 rounded-xl border-2 transition-all ${
-                          selectedMaterial === material.id
-                            ? `${material.bg} border-emerald-500`
-                            : 'bg-slate-50 border-slate-200 hover:border-slate-300'
-                        }`}
+                        className={`p-4 rounded-xl border-2 transition-all ${selectedMaterial === material.id
+                          ? `${material.bg} border-emerald-500`
+                          : 'bg-slate-50 border-slate-200 hover:border-slate-300'
+                          }`}
                       >
                         <Icon className={`w-6 h-6 mx-auto mb-2 ${material.color}`} />
                         <span className="text-sm font-medium text-slate-700">{material.name}</span>
@@ -635,15 +632,15 @@ export const RewardsPage: React.FC = () => {
           .select('points_total, role')
           .eq('id', user.id)
           .single()
-        
+
         if (profileError) {
           console.error('Erro ao buscar perfil:', profileError)
         }
-        
+
         if (profile) {
           setPoints(profile.points_total || 0)
           setUserRole(profile.role as UserRole || 'resident')
-          
+
           // Se for residente, buscar transações
           if (profile.role === 'resident') {
             await fetchTransactions()
@@ -658,81 +655,81 @@ export const RewardsPage: React.FC = () => {
     fetchUserData()
   }, [user])
 
-const fetchTransactions = async () => {
-  if (!user) {
-    console.log('⚠️ Usuário não autenticado')
-    return
-  }
-  
-  setLoadingTransactions(true)
-  console.log('🔍 Buscando transações para o usuário:', user.id)
-  
-  try {
-    const { error: tableCheckError } = await supabase
-      .from('transactions')
-      .select('id')
-      .limit(1)
-    
-    if (tableCheckError && tableCheckError.code === '42P01') {
-      console.error('❌ Tabela "transactions" não existe no banco de dados!')
-      setTransactions([])
-      setLoadingTransactions(false)
+  async function fetchTransactions() {
+    if (!user) {
+      console.log('⚠️ Usuário não autenticado')
       return
     }
-    
-    // Buscar transações
-    const { data, error } = await supabase
-      .from('transactions')
-      .select(`
+
+    setLoadingTransactions(true)
+    console.log('🔍 Buscando transações para o usuário:', user.id)
+
+    try {
+      const { error: tableCheckError } = await supabase
+        .from('transactions')
+        .select('id')
+        .limit(1)
+
+      if (tableCheckError && tableCheckError.code === '42P01') {
+        console.error('❌ Tabela "transactions" não existe no banco de dados!')
+        setTransactions([])
+        setLoadingTransactions(false)
+        return
+      }
+
+      // Buscar transações
+      const { data, error } = await supabase
+        .from('transactions')
+        .select(`
         id,
         points,
         material_type,
         created_at,
         employee_id
       `)
-      .eq('user_id', user.id)
-      .order('created_at', { ascending: false })
-      .limit(50)
-    
-    if (error) {
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false })
+        .limit(50)
+
+      if (error) {
+        console.error('❌ Erro ao buscar transações:', error)
+        throw error
+      }
+
+      console.log(`✅ Encontradas ${data?.length || 0} transações`)
+
+      if (data && data.length > 0) {
+        console.log('📋 Primeira transação:', data[0])
+      }
+
+      // Buscar nomes dos funcionários
+      const transactionsWithNames = await Promise.all(
+        (data || []).map(async (transaction) => {
+          let employee_name = null
+          if (transaction.employee_id) {
+            const { data: employee } = await supabase
+              .from('profiles')
+              .select('name')
+              .eq('id', transaction.employee_id)
+              .single()
+            employee_name = employee?.name
+          }
+          return {
+            ...transaction,
+            employee_name
+          }
+        })
+      )
+
+      setTransactions(transactionsWithNames)
+
+    } catch (error) {
       console.error('❌ Erro ao buscar transações:', error)
-      throw error
+      setTransactions([])
+    } finally {
+      setLoadingTransactions(false)
     }
-    
-    console.log(`✅ Encontradas ${data?.length || 0} transações`)
-    
-    if (data && data.length > 0) {
-      console.log('📋 Primeira transação:', data[0])
-    }
-    
-    // Buscar nomes dos funcionários
-    const transactionsWithNames = await Promise.all(
-      (data || []).map(async (transaction) => {
-        let employee_name = null
-        if (transaction.employee_id) {
-          const { data: employee } = await supabase
-            .from('profiles')
-            .select('name')
-            .eq('id', transaction.employee_id)
-            .single()
-          employee_name = employee?.name
-        }
-        return {
-          ...transaction,
-          employee_name
-        }
-      })
-    )
-    
-    setTransactions(transactionsWithNames)
-    
-  } catch (error) {
-    console.error('❌ Erro ao buscar transações:', error)
-    setTransactions([])
-  } finally {
-    setLoadingTransactions(false)
   }
-}
 
   const showNotification = (message: string, type: 'success' | 'error' | 'info') => {
     setNotification({ message, type })
@@ -741,144 +738,145 @@ const fetchTransactions = async () => {
   const handleQRCodeScanned = async (qrData: string) => {
     try {
       let userId = qrData.trim()
-      
+
       try {
         const parsed = JSON.parse(userId)
         userId = parsed.userId || parsed.user_id || parsed.id || userId
       } catch {
+        /* empty */
       }
-      
+
       const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
       if (!uuidRegex.test(userId)) {
         throw new Error('UUID inválido')
       }
-      
+
       const { data: profile, error: profileError } = await supabase
         .from('profiles')
         .select('id, name, points_total, role')
         .eq('id', userId)
         .maybeSingle()
-      
+
       if (profileError) throw profileError
       if (!profile) throw new Error('Usuário não encontrado')
-      
+
       if (profile.id === user?.id) {
         showNotification('Você não pode validar seus próprios pontos!', 'error')
         setShowQRScanner(false)
         return
       }
-      
+
       setSelectedUser({ id: profile.id, name: profile.name || 'Usuário' })
       setShowQRScanner(false)
       setShowAddPoints(true)
-      
+
     } catch (error) {
       showNotification(`Erro: ${error instanceof Error ? error.message : 'QR Code inválido'}`, 'error')
       setShowQRScanner(false)
     }
   }
 
-const handleAddPoints = async (userId: string, pointsToAdd: number, materialType: string) => {
-  console.log('🚀 ===== INICIANDO ADIÇÃO DE PONTOS =====')
-  console.log('📝 Dados recebidos:')
-  console.log('  - userId:', userId)
-  console.log('  - pointsToAdd:', pointsToAdd)
-  console.log('  - materialType:', materialType)
-  console.log('  - employee_id:', user?.id)
-  
-  try {
-    //Buscar pontos atuais
-    console.log('📊 Passo 1: Buscando pontos atuais...')
-    const { data: profiles, error: fetchError } = await supabase
-      .from('profiles')
-      .select('points_total')
-      .eq('id', userId)
-    
-    if (fetchError) {
-      console.error('❌ Erro ao buscar perfil:', fetchError)
-      throw fetchError
-    }
-    
-    if (!profiles || profiles.length === 0) {
-      throw new Error('Perfil não encontrado')
-    }
-    
-    const currentPoints = profiles[0].points_total || 0
-    const newTotal = currentPoints + pointsToAdd
-    
-    console.log('  - Pontos atuais:', currentPoints)
-    console.log('  - Novo total:', newTotal)
-    
-    //Atualizar pontos no perfil
-    console.log('📊 Passo 2: Atualizando pontos no perfil...')
-    const { error: updateError } = await supabase
-      .from('profiles')
-      .update({ points_total: newTotal })
-      .eq('id', userId)
-    
-    if (updateError) {
-      console.error('❌ Erro ao atualizar pontos:', updateError)
-      throw updateError
-    }
-    
-    
-    const transactionData = {
-      user_id: userId,
-      points: pointsToAdd,
-      material_type: materialType,
-      employee_id: user?.id,
-      created_at: new Date().toISOString()
-    }
-    
-    console.log('  - Dados da transação:', transactionData)
-    
-    // Tenta inserir e retorna o resultado
-    const { data: insertedData, error: txError } = await supabase
-      .from('transactions')
-      .insert(transactionData)
-      .select() // Importante: retorna os dados inseridos
-    
-    if (txError) {
-      console.error('❌ ERRO DETALHADO ao inserir transação:')
-      console.error('  - Código:', txError.code)
-      console.error('  - Mensagem:', txError.message)
-      console.error('  - Detalhes:', txError.details)
-      console.error('  - Dica:', txError.hint)
-      
-      // Verifica tipos específicos de erro
-      if (txError.code === '42P01') {
-        console.error('  ⚠️ A tabela "transactions" NÃO EXISTE!')
-        showNotification('Erro: Tabela de transações não encontrada! Contate o suporte.', 'error')
-      } else if (txError.code === '42501') {
-        console.error('  ⚠️ Permissão negada! Verifique as políticas RLS.')
-        showNotification('Erro: Permissão negada para registrar transação.', 'error')
-      } else if (txError.code === '23503') {
-        console.error('  ⚠️ Chave estrangeira inválida! user_id ou employee_id não existe.')
-        showNotification('Erro: Usuário ou funcionário inválido.', 'error')
-      } else {
-        showNotification(`Erro ao registrar transação: ${txError.message}`, 'error')
+  const handleAddPoints = async (userId: string, pointsToAdd: number, materialType: string) => {
+    console.log('🚀 ===== INICIANDO ADIÇÃO DE PONTOS =====')
+    console.log('📝 Dados recebidos:')
+    console.log('  - userId:', userId)
+    console.log('  - pointsToAdd:', pointsToAdd)
+    console.log('  - materialType:', materialType)
+    console.log('  - employee_id:', user?.id)
+
+    try {
+      //Buscar pontos atuais
+      console.log('📊 Passo 1: Buscando pontos atuais...')
+      const { data: profiles, error: fetchError } = await supabase
+        .from('profiles')
+        .select('points_total')
+        .eq('id', userId)
+
+      if (fetchError) {
+        console.error('❌ Erro ao buscar perfil:', fetchError)
+        throw fetchError
       }
-    } else {
-      console.log('✅ Transação registrada com sucesso!')
-      console.log('  - Dados inseridos:', insertedData)
-      showNotification(`${pointsToAdd} pontos adicionados para ${selectedUser?.name}!`, 'success')
+
+      if (!profiles || profiles.length === 0) {
+        throw new Error('Perfil não encontrado')
+      }
+
+      const currentPoints = profiles[0].points_total || 0
+      const newTotal = currentPoints + pointsToAdd
+
+      console.log('  - Pontos atuais:', currentPoints)
+      console.log('  - Novo total:', newTotal)
+
+      //Atualizar pontos no perfil
+      console.log('📊 Passo 2: Atualizando pontos no perfil...')
+      const { error: updateError } = await supabase
+        .from('profiles')
+        .update({ points_total: newTotal })
+        .eq('id', userId)
+
+      if (updateError) {
+        console.error('❌ Erro ao atualizar pontos:', updateError)
+        throw updateError
+      }
+
+
+      const transactionData = {
+        user_id: userId,
+        points: pointsToAdd,
+        material_type: materialType,
+        employee_id: user?.id,
+        created_at: new Date().toISOString()
+      }
+
+      console.log('  - Dados da transação:', transactionData)
+
+      // Tenta inserir e retorna o resultado
+      const { data: insertedData, error: txError } = await supabase
+        .from('transactions')
+        .insert(transactionData)
+        .select() // Importante: retorna os dados inseridos
+
+      if (txError) {
+        console.error('❌ ERRO DETALHADO ao inserir transação:')
+        console.error('  - Código:', txError.code)
+        console.error('  - Mensagem:', txError.message)
+        console.error('  - Detalhes:', txError.details)
+        console.error('  - Dica:', txError.hint)
+
+        // Verifica tipos específicos de erro
+        if (txError.code === '42P01') {
+          console.error('  ⚠️ A tabela "transactions" NÃO EXISTE!')
+          showNotification('Erro: Tabela de transações não encontrada! Contate o suporte.', 'error')
+        } else if (txError.code === '42501') {
+          console.error('  ⚠️ Permissão negada! Verifique as políticas RLS.')
+          showNotification('Erro: Permissão negada para registrar transação.', 'error')
+        } else if (txError.code === '23503') {
+          console.error('  ⚠️ Chave estrangeira inválida! user_id ou employee_id não existe.')
+          showNotification('Erro: Usuário ou funcionário inválido.', 'error')
+        } else {
+          showNotification(`Erro ao registrar transação: ${txError.message}`, 'error')
+        }
+      } else {
+        console.log('✅ Transação registrada com sucesso!')
+        console.log('  - Dados inseridos:', insertedData)
+        showNotification(`${pointsToAdd} pontos adicionados para ${selectedUser?.name}!`, 'success')
+      }
+
+      // 4. Atualizar UI se for o próprio usuário
+      if (userId === user?.id) {
+        console.log('📊 Passo 4: Atualizando UI...')
+        setPoints(newTotal)
+        await fetchTransactions() // Recarregar transações
+      }
+
+      setShowAddPoints(false)
+      console.log('🏁 ===== PROCESSO CONCLUÍDO =====')
+
+    } catch (error) {
+      console.error('❌ Erro geral no processo:', error)
+      showNotification(`Erro ao adicionar pontos: ${error instanceof Error ? error.message : 'Tente novamente'}`, 'error')
     }
-    
-    // 4. Atualizar UI se for o próprio usuário
-    if (userId === user?.id) {
-      console.log('📊 Passo 4: Atualizando UI...')
-      setPoints(newTotal)
-      await fetchTransactions() // Recarregar transações
-    }
-    
-    setShowAddPoints(false)
-    console.log('🏁 ===== PROCESSO CONCLUÍDO =====')
-    
-  } catch (error) {
-    console.error('❌ Erro geral no processo:', error)
-    showNotification(`Erro ao adicionar pontos: ${error instanceof Error ? error.message : 'Tente novamente'}`, 'error')
   }
-}
 
   const handleRedeemReward = async (rewardId: string, pointsCost: number, rewardName: string) => {
     try {
@@ -886,16 +884,16 @@ const handleAddPoints = async (userId: string, pointsToAdd: number, materialType
         showNotification(`Pontos insuficientes! Você tem ${points} pontos.`, 'error')
         return
       }
-      
+
       const newPoints = points - pointsCost
-      
+
       const { error: updateError } = await supabase
         .from('profiles')
         .update({ points_total: newPoints })
         .eq('id', user?.id)
-      
+
       if (updateError) throw updateError
-      
+
       // Registrar resgate
       try {
         await supabase.from('redemptions').insert({
@@ -908,10 +906,10 @@ const handleAddPoints = async (userId: string, pointsToAdd: number, materialType
       } catch (e) {
         console.warn('Não foi possível registrar resgate:', e)
       }
-      
+
       setPoints(newPoints)
       showNotification(`Parabéns! Você resgatou ${rewardName}! 🎉`, 'success')
-      
+
     } catch (error) {
       showNotification(`Erro ao resgatar: ${error instanceof Error ? error.message : 'Tente novamente'}`, 'error')
     }
@@ -922,7 +920,7 @@ const handleAddPoints = async (userId: string, pointsToAdd: number, materialType
     const now = new Date()
     const diff = now.getTime() - date.getTime()
     const days = Math.floor(diff / (1000 * 60 * 60 * 24))
-    
+
     if (days === 0) return 'Hoje'
     if (days === 1) return 'Ontem'
     if (days < 7) return `${days} dias atrás`
@@ -930,7 +928,7 @@ const handleAddPoints = async (userId: string, pointsToAdd: number, materialType
   }
 
   const getMaterialIcon = (type: string) => {
-    const icons: Record<string, any> = {
+    const icons: Record<string, React.ElementType> = {
       plastic: Package,
       metal: Box,
       paper: Newspaper,
@@ -981,7 +979,7 @@ const handleAddPoints = async (userId: string, pointsToAdd: number, materialType
               <p className="text-slate-500 text-sm mt-1">Valide e gerencie os pontos dos residentes.</p>
             </header>
 
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               className="bg-gradient-to-br from-emerald-900 to-emerald-800 rounded-[2rem] p-8 text-white shadow-2xl mb-8"
@@ -996,7 +994,7 @@ const handleAddPoints = async (userId: string, pointsToAdd: number, materialType
                 </p>
               </div>
 
-              <button 
+              <button
                 onClick={() => setShowQRScanner(true)}
                 className="w-full py-4 bg-[#10b981] hover:bg-[#059669] text-white font-bold rounded-2xl transition-all active:scale-95 shadow-lg flex items-center justify-center gap-2"
               >
@@ -1009,7 +1007,7 @@ const handleAddPoints = async (userId: string, pointsToAdd: number, materialType
                 <Award className="text-emerald-500" size={20} />
                 <h3 className="font-bold text-slate-800">Tabela de Conversão</h3>
               </div>
-              
+
               <div className="space-y-4">
                 {[
                   { label: 'Plástico', value: '10 pts/kg', color: 'bg-blue-50 text-blue-600' },
@@ -1030,7 +1028,7 @@ const handleAddPoints = async (userId: string, pointsToAdd: number, materialType
           </div>
         </div>
 
-        <QRScannerDialog 
+        <QRScannerDialog
           isOpen={showQRScanner}
           onClose={() => setShowQRScanner(false)}
           onScan={handleQRCodeScanned}
@@ -1064,39 +1062,58 @@ const handleAddPoints = async (userId: string, pointsToAdd: number, materialType
     <>
       <div className="min-h-screen bg-slate-50 pb-24 pt-8 px-6 font-sans">
         <div className="max-w-md mx-auto">
-          <header className="mb-8">
-            <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">
-              Suas <span className="text-[#10b981]">Conquistas</span>
-            </h1>
-            <p className="text-slate-500 text-sm mt-1">Transforme seu lixo em impacto positivo.</p>
+          <header className="mb-8 relative z-10">
+            <motion.h1 
+              initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} 
+              className="text-3xl font-extrabold text-slate-900 tracking-tight"
+            >
+              Suas <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#10b981] to-teal-500">Conquistas</span>
+            </motion.h1>
+            <motion.p 
+              initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }}
+              className="text-slate-500 text-sm mt-1"
+            >
+              Transforme seu lixo em impacto positivo.
+            </motion.p>
           </header>
 
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="bg-gradient-to-br from-emerald-900 to-emerald-800 rounded-[2.5rem] p-8 text-white shadow-2xl shadow-emerald-200 relative overflow-hidden mb-8"
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-gradient-to-br from-emerald-600 via-emerald-500 to-teal-600 rounded-[2.5rem] p-8 text-white shadow-xl shadow-emerald-200 relative overflow-hidden mb-8 border border-emerald-400/30"
           >
+            {/* Background elements */}
+            <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10 mix-blend-overlay pointer-events-none"></div>
+            <div className="absolute top-0 right-0 w-64 h-64 bg-white/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 pointer-events-none"></div>
+            <div className="absolute bottom-0 left-0 w-48 h-48 bg-teal-900/20 rounded-full blur-2xl translate-y-1/3 -translate-x-1/4 pointer-events-none"></div>
+
             <div className="relative z-10">
-              <div className="flex justify-between items-start mb-6">
-                <div className="p-3 bg-white/10 rounded-2xl backdrop-blur-md">
-                  <Gift className="text-emerald-400" size={24} />
+              <div className="flex justify-between items-center mb-8">
+                <div className="p-4 bg-white/20 rounded-2xl backdrop-blur-md shadow-inner border border-white/30">
+                  <Gift className="text-white" size={28} />
                 </div>
                 <div className="text-right">
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-400/80">Saldo Total</span>
-                  <h2 className="text-4xl font-black">{points.toLocaleString('pt-BR')} <span className="text-sm font-bold text-emerald-400">pts</span></h2>
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-100">Saldo Total</span>
+                  <div className="flex items-baseline gap-1 justify-end">
+                    <motion.h2 
+                      initial={{ scale: 0.5, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ type: 'spring', delay: 0.2 }}
+                      className="text-5xl font-black drop-shadow-md tracking-tighter"
+                    >
+                      {points.toLocaleString('pt-BR')}
+                    </motion.h2>
+                    <span className="text-sm font-bold text-emerald-200">pts</span>
+                  </div>
                 </div>
               </div>
-              
-              <button 
+
+              <motion.button
+                whileTap={{ scale: 0.95 }}
                 onClick={() => setShowRedeemRewards(true)}
-                className="w-full py-4 bg-[#10b981] hover:bg-[#059669] text-white font-bold rounded-2xl transition-all active:scale-95 shadow-lg shadow-black/20 flex items-center justify-center gap-2"
+                className="w-full py-4 bg-white hover:bg-slate-50 text-emerald-600 font-black rounded-2xl transition-all shadow-lg flex items-center justify-center gap-2 border border-white/50"
               >
-                <ShoppingBag size={18} /> Resgatar Prêmios
-              </button>
+                <ShoppingBag size={20} /> Resgatar Prêmios
+              </motion.button>
             </div>
-            
-            <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-emerald-400/10 rounded-full blur-3xl"></div>
-            <div className="absolute top-0 left-0 w-32 h-32 bg-white/5 rounded-full blur-2xl -translate-x-1/2 -translate-y-1/2"></div>
           </motion.div>
 
           <div className="bg-white rounded-[2rem] p-6 shadow-sm border border-slate-100 mb-8">
@@ -1104,7 +1121,7 @@ const handleAddPoints = async (userId: string, pointsToAdd: number, materialType
               <Award className="text-emerald-500" size={20} />
               <h3 className="font-bold text-slate-800">Tabela de Conversão</h3>
             </div>
-            
+
             <div className="space-y-4">
               {[
                 { label: 'Plástico', value: '10 pts/kg', color: 'bg-blue-50 text-blue-600' },
@@ -1129,7 +1146,7 @@ const handleAddPoints = async (userId: string, pointsToAdd: number, materialType
               <h3 className="font-bold text-slate-800">Atividades Recentes</h3>
             </div>
             {transactions.length > 3 && (
-              <button 
+              <button
                 onClick={() => setShowFullHistory(true)}
                 className="text-xs font-bold text-[#10b981] flex items-center gap-1 hover:gap-2 transition-all"
               >

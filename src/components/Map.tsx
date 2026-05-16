@@ -31,6 +31,7 @@ interface MapProps {
   externalPoints?: CollectionPoint[]
   forcedCenter?: [number, number] | null
   onClearFocus?: () => void
+  onPointSelect?: (point: CollectionPoint) => void
 }
 
 function MapController({ center }: { center: [number, number] | null }) {
@@ -43,7 +44,7 @@ function MapController({ center }: { center: [number, number] | null }) {
   return null
 }
 
-export const CollectionMap: React.FC<MapProps> = ({ externalPoints, forcedCenter, onClearFocus }) => {
+export const CollectionMap: React.FC<MapProps> = ({ externalPoints, forcedCenter, onClearFocus, onPointSelect }) => {
   const [userPosition, setUserPosition] = useState<[number, number] | null>(null)
   const [internalPoints, setInternalPoints] = useState<CollectionPoint[]>([])
   const [routeData, setRouteData] = useState<[number, number][]>([])
@@ -152,20 +153,15 @@ export const CollectionMap: React.FC<MapProps> = ({ externalPoints, forcedCenter
         )}
 
         {points.map(point => (
-          <Marker key={point.id} position={[point.latitude, point.longitude]}>
-            <Popup>
-              <div className="font-sans p-2 min-w-[180px]">
-                <h4 className="font-bold text-slate-800 text-sm mb-1">{point.name}</h4>
-                <p className="text-[10px] text-slate-500 mb-3">{point.address}</p>
-                <button
-                  onClick={() => openInGoogleMaps(point.latitude, point.longitude)}
-                  className="w-full flex items-center justify-center gap-2 bg-blue-600 text-white text-[10px] font-bold py-2 rounded-lg hover:bg-blue-700 transition-colors"
-                >
-                  <ExternalLink size={12} /> Google Maps
-                </button>
-              </div>
-            </Popup>
-          </Marker>
+          <Marker 
+            key={point.id} 
+            position={[point.latitude, point.longitude]}
+            eventHandlers={{
+              click: () => {
+                if (onPointSelect) onPointSelect(point)
+              }
+            }}
+          />
         ))}
 
         {routeData.length > 0 && (
