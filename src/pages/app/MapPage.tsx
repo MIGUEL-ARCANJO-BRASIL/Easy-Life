@@ -250,7 +250,7 @@ export const MapPage: React.FC = () => {
                             </span>
                           </div>
                           <div className="flex flex-wrap gap-1">
-                            {p.materials.slice(0, 3).map((m, i) => (
+                            {p.materials.slice(0, 3).map((m: string, i: number) => (
                               <span key={i} className="text-[8px] font-bold uppercase bg-slate-50 text-slate-500 px-2 py-0.5 rounded-md">
                                 {m}
                               </span>

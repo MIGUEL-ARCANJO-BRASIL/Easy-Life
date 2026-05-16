@@ -1,6 +1,6 @@
 // ProfilePage.tsx - VERSÃO MELHORADA
 import React, { useEffect, useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { User, QrCode, Settings, LogOut, ChevronRight, Shield, Bell, HelpCircle, Loader2, Copy, Check, Leaf } from 'lucide-react'
 import { useAuth } from '../../context/AuthContext'
 import { useNavigate } from 'react-router-dom'
